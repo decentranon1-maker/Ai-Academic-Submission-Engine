@@ -1,0 +1,21 @@
+{
+  "name": "ai-academic-submission-engine",
+  "version": "1.0.0",
+  "description": "AI-powered academic paper submission engine with verified reference sourcing",
+  "main": "server.js",
+  "scripts": {
+    "start": "node server.js",
+    "dev": "node server.js"
+  },
+  "dependencies": {
+    "express": "^4.18.2",
+    "cors": "^2.8.5",
+    "sqlite3": "^5.1.7",
+    "multer": "^1.4.5-lts.1",
+    "pdf-parse": "^1.1.1",
+    "mammoth": "^1.6.0",
+    "pdfkit": "^0.13.0",
+    "uuid": "^9.0.0",
+    "node-fetch": "^2.7.0"
+  }
+}

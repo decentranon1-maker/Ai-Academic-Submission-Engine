@@ -1,0 +1,287 @@
+/* === AI Academic Submission Engine - Styles === */
+
+/* Page Management */
+.page { display: none; }
+.page.active { display: block; }
+
+/* Navigation */
+.nav-link {
+  @apply px-3 py-2 text-sm font-medium text-academic-500 hover:text-primary-600 hover:bg-primary-50 rounded-lg transition-all;
+}
+.nav-link.active {
+  @apply text-primary-700 bg-primary-50;
+}
+
+/* Buttons */
+.btn-primary {
+  @apply inline-flex items-center gap-2 px-4 py-2.5 bg-primary-600 text-white font-medium rounded-lg hover:bg-primary-700 transition-all shadow-sm text-sm;
+}
+.btn-primary:disabled {
+  @apply opacity-50 cursor-not-allowed;
+}
+.btn-secondary {
+  @apply inline-flex items-center gap-2 px-4 py-2.5 bg-white text-academic-700 font-medium rounded-lg hover:bg-academic-50 transition-all border border-academic-200 shadow-sm text-sm;
+}
+.btn-ghost {
+  @apply inline-flex items-center gap-2 px-4 py-2.5 text-academic-500 font-medium rounded-lg hover:bg-academic-100 transition-all text-sm;
+}
+.btn-success {
+  @apply inline-flex items-center gap-2 px-3 py-1.5 bg-success/10 text-success font-medium rounded-lg hover:bg-success/20 transition-all text-xs;
+}
+.btn-danger {
+  @apply inline-flex items-center gap-2 px-3 py-1.5 bg-danger/10 text-danger font-medium rounded-lg hover:bg-danger/20 transition-all text-xs;
+}
+.btn-warning {
+  @apply inline-flex items-center gap-2 px-3 py-1.5 bg-warning/10 text-warning font-medium rounded-lg hover:bg-warning/20 transition-all text-xs;
+}
+
+/* Cards */
+.feature-card {
+  @apply bg-white rounded-xl p-6 border border-academic-100 shadow-sm hover:shadow-md transition-all;
+}
+.feature-icon {
+  @apply w-12 h-12 rounded-xl flex items-center justify-center mb-4;
+}
+.dashboard-card {
+  @apply bg-white rounded-xl p-6 border border-academic-200 shadow-sm;
+}
+.stat-card {
+  @apply bg-white rounded-xl p-5 border border-academic-200 shadow-sm;
+}
+
+/* Upload Zone */
+.upload-zone {
+  @apply border-2 border-dashed border-academic-300 rounded-2xl p-12 text-center cursor-pointer transition-all hover:border-primary-400 hover:bg-primary-50/30;
+}
+.upload-zone.dragover {
+  @apply border-primary-500 bg-primary-50/50;
+}
+
+/* Filter Tabs */
+.filter-tab {
+  @apply px-4 py-2 text-sm font-medium text-academic-500 rounded-lg hover:bg-academic-100 transition-all;
+}
+.filter-tab.active {
+  @apply bg-primary-600 text-white hover:bg-primary-700;
+}
+
+/* Chat */
+.chat-message {
+  @apply flex;
+}
+.chat-message.user {
+  @apply justify-end;
+}
+.chat-message.assistant {
+  @apply justify-start;
+}
+.chat-bubble {
+  @apply max-w-[80%] px-4 py-3 rounded-2xl text-sm leading-relaxed;
+}
+.chat-bubble.user {
+  @apply bg-primary-600 text-white rounded-br-md;
+}
+.chat-bubble.assistant {
+  @apply bg-academic-100 text-academic-800 rounded-bl-md;
+}
+
+/* Quick Action Buttons */
+.quick-action-btn {
+  @apply w-full text-left px-3 py-2.5 text-sm text-academic-600 hover:text-primary-700 hover:bg-primary-50 rounded-lg transition-all border border-transparent hover:border-primary-100;
+}
+
+/* Reference Card */
+.reference-card {
+  @apply bg-white rounded-xl border border-academic-200 p-5 shadow-sm hover:shadow-md transition-all;
+}
+.reference-card.accepted {
+  @apply border-l-4 border-l-success;
+}
+.reference-card.rejected {
+  @apply border-l-4 border-l-danger opacity-60;
+}
+.reference-card.suggested {
+  @apply border-l-4 border-l-warning;
+}
+
+/* Quality Score Badge */
+.quality-badge {
+  @apply inline-flex items-center gap-1 px-2.5 py-1 rounded-full text-xs font-semibold;
+}
+.quality-badge.high {
+  @apply bg-success/10 text-success;
+}
+.quality-badge.medium {
+  @apply bg-warning/10 text-warning;
+}
+.quality-badge.low {
+  @apply bg-danger/10 text-danger;
+}
+
+/* Citation Spot Card */
+.citation-spot-card {
+  @apply bg-white rounded-xl border border-academic-200 p-5 shadow-sm;
+}
+.citation-spot-card .claim-text {
+  @apply bg-warning/5 border-l-4 border-l-warning px-4 py-3 rounded-r-lg text-sm text-academic-700 italic;
+}
+
+/* Suggestion Card inside citation spot */
+.suggestion-card {
+  @apply bg-academic-50 rounded-lg p-4 border border-academic-100;
+}
+
+/* Format Style Card */
+.format-card {
+  @apply bg-white rounded-xl border-2 border-academic-200 p-5 cursor-pointer transition-all hover:border-primary-300 hover:shadow-md;
+}
+.format-card.selected {
+  @apply border-primary-500 bg-primary-50/30 shadow-md;
+}
+
+/* Modal */
+.modal-overlay {
+  @apply fixed inset-0 bg-black/50 z-50 flex items-center justify-center p-4;
+}
+.modal-content {
+  @apply bg-white rounded-2xl p-6 w-full max-w-lg max-h-[90vh] overflow-y-auto shadow-2xl;
+}
+.modal-input {
+  @apply w-full mt-1 px-3 py-2.5 border border-academic-200 rounded-lg text-sm focus:ring-2 focus:ring-primary-500 focus:border-transparent outline-none;
+}
+
+/* Loading Spinner */
+.loading-spinner {
+  @apply w-12 h-12 border-4 border-primary-200 border-t-primary-600 rounded-full animate-spin mx-auto;
+}
+
+/* Originality Circle */
+.originality-circle {
+  @apply w-28 h-28 rounded-full border-4 flex flex-col items-center justify-center;
+}
+.originality-circle.high {
+  @apply border-success bg-success/5;
+}
+.originality-circle.medium {
+  @apply border-warning bg-warning/5;
+}
+.originality-circle.low {
+  @apply border-danger bg-danger/5;
+}
+
+/* Toast */
+.toast-success {
+  @apply bg-white border-success/30 text-success;
+}
+.toast-error {
+  @apply bg-white border-danger/30 text-danger;
+}
+.toast-info {
+  @apply bg-white border-primary-300 text-primary-700;
+}
+.toast-warning {
+  @apply bg-white border-warning/30 text-warning;
+}
+
+/* Paper List Item */
+.paper-item {
+  @apply flex items-center justify-between p-4 bg-white rounded-xl border border-academic-200 hover:border-primary-300 hover:shadow-sm transition-all cursor-pointer;
+}
+
+/* Keyword Tag */
+.keyword-tag {
+  @apply inline-flex items-center px-3 py-1.5 bg-primary-50 text-primary-700 rounded-full text-xs font-medium border border-primary-100;
+}
+
+/* Topic Item */
+.topic-item {
+  @apply flex items-center justify-between p-3 bg-academic-50 rounded-lg;
+}
+
+/* Claim Item */
+.claim-item {
+  @apply p-4 bg-academic-50 rounded-lg border-l-3 border-l-warning;
+}
+.claim-item.has-citation {
+  @apply border-l-success;
+}
+
+/* Issue Item */
+.issue-item {
+  @apply flex items-start gap-3 p-3 rounded-lg;
+}
+.issue-item.high {
+  @apply bg-danger/5;
+}
+.issue-item.medium {
+  @apply bg-warning/5;
+}
+
+/* Section Item */
+.section-item {
+  @apply flex items-center gap-2 px-3 py-2 bg-success/5 text-success rounded-lg text-sm;
+}
+
+/* Scrollbar */
+::-webkit-scrollbar {
+  width: 6px;
+  height: 6px;
+}
+::-webkit-scrollbar-track {
+  background: transparent;
+}
+::-webkit-scrollbar-thumb {
+  background: #cbd5e1;
+  border-radius: 3px;
+}
+::-webkit-scrollbar-thumb:hover {
+  background: #94a3b8;
+}
+
+/* Library Card */
+.library-card {
+  @apply bg-white rounded-xl border border-academic-200 p-5 shadow-sm hover:shadow-md transition-all;
+}
+
+/* Smooth transitions */
+* {
+  scroll-behavior: smooth;
+}
+
+/* Print styles */
+@media print {
+  nav, .btn-primary, .btn-secondary, .btn-ghost { display: none !important; }
+  .page { display: block !important; }
+}
+
+/* Custom animations */
+@keyframes fadeIn {
+  from { opacity: 0; transform: translateY(10px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+.fade-in {
+  animation: fadeIn 0.3s ease-out;
+}
+
+@keyframes slideUp {
+  from { opacity: 0; transform: translateY(20px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+.slide-up {
+  animation: slideUp 0.4s ease-out;
+}
+
+/* DOI link */
+.doi-link {
+  @apply text-primary-600 hover:text-primary-700 underline text-xs break-all;
+}
+
+/* Responsive adjustments */
+@media (max-width: 768px) {
+  .upload-zone {
+    @apply p-8;
+  }
+  .dashboard-card {
+    @apply p-4;
+  }
+}

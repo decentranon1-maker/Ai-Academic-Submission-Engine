@@ -1,0 +1,630 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>AI Academic Submission Engine</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&family=Merriweather:wght@300;400;700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="style.css">
+  <script>
+    tailwind.config = {
+      theme: {
+        extend: {
+          colors: {
+            primary: { 50:'#eff6ff',100:'#dbeafe',200:'#bfdbfe',300:'#93c5fd',400:'#60a5fa',500:'#3b82f6',600:'#2563eb',700:'#1d4ed8',800:'#1e40af',900:'#1e3a8a' },
+            academic: { 50:'#f8fafc',100:'#f1f5f9',200:'#e2e8f0',300:'#cbd5e1',400:'#94a3b8',500:'#64748b',600:'#475569',700:'#334155',800:'#1e293b',900:'#0f172a' },
+            success: '#10b981',
+            warning: '#f59e0b',
+            danger: '#ef4444',
+            accent: '#8b5cf6'
+          },
+          fontFamily: {
+            sans: ['Inter', 'sans-serif'],
+            serif: ['Merriweather', 'serif']
+          }
+        }
+      }
+    }
+  </script>
+</head>
+<body class="bg-academic-50 font-sans text-academic-800 min-h-screen">
+
+  <!-- Top Navigation -->
+  <nav id="topNav" class="fixed top-0 left-0 right-0 z-50 bg-white border-b border-academic-200 shadow-sm">
+    <div class="max-w-full mx-auto px-4 sm:px-6">
+      <div class="flex items-center justify-between h-16">
+        <div class="flex items-center gap-3 cursor-pointer" onclick="navigateTo('landing')">
+          <div class="w-9 h-9 bg-primary-600 rounded-lg flex items-center justify-center">
+            <svg class="w-5 h-5 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 6.253v13m0-13C10.832 5.477 9.246 5 7.5 5S4.168 5.477 3 6.253v13C4.168 18.477 5.754 18 7.5 18s3.332.477 4.5 1.253m0-13C13.168 5.477 14.754 5 16.5 5c1.747 0 3.332.477 4.5 1.253v13C19.832 18.477 18.247 18 16.5 18c-1.746 0-3.332.477-4.5 1.253"/></svg>
+          </div>
+          <span class="text-lg font-bold text-academic-900">AI Academic Engine</span>
+        </div>
+
+        <div id="navLinks" class="hidden md:flex items-center gap-1">
+          <button onclick="navigateTo('upload')" class="nav-link" data-page="upload">Upload</button>
+          <button onclick="navigateTo('dashboard')" class="nav-link" data-page="dashboard">Dashboard</button>
+          <button onclick="navigateTo('citations')" class="nav-link" data-page="citations">Citations</button>
+          <button onclick="navigateTo('copilot')" class="nav-link" data-page="copilot">AI Co-Pilot</button>
+          <button onclick="navigateTo('references')" class="nav-link" data-page="references">References</button>
+          <button onclick="navigateTo('formatting')" class="nav-link" data-page="formatting">Formatting</button>
+          <button onclick="navigateTo('export')" class="nav-link" data-page="export">Export</button>
+        </div>
+
+        <div class="flex items-center gap-3">
+          <div id="paperIndicator" class="hidden items-center gap-2 px-3 py-1.5 bg-primary-50 rounded-full text-sm">
+            <div class="w-2 h-2 bg-success rounded-full"></div>
+            <span id="activePaperTitle" class="text-primary-700 font-medium truncate max-w-[150px]"></span>
+          </div>
+          <button onclick="navigateTo('library')" class="p-2 text-academic-500 hover:text-primary-600 transition-colors" title="Reference Library">
+            <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 8h14M5 8a2 2 0 110-4h14a2 2 0 110 4M5 8v10a2 2 0 002 2h10a2 2 0 002-2V8m-9 4h4"/></svg>
+          </button>
+        </div>
+      </div>
+    </div>
+  </nav>
+
+  <!-- Main Content Area -->
+  <main class="pt-16 min-h-screen">
+
+    <!-- Landing Page -->
+    <section id="page-landing" class="page active">
+      <div class="relative overflow-hidden">
+        <div class="absolute inset-0 bg-gradient-to-br from-primary-600 via-primary-700 to-academic-900"></div>
+        <div class="absolute inset-0 opacity-10">
+          <div class="absolute top-20 left-20 w-72 h-72 bg-white rounded-full blur-3xl"></div>
+          <div class="absolute bottom-20 right-20 w-96 h-96 bg-accent rounded-full blur-3xl"></div>
+        </div>
+        <div class="relative max-w-6xl mx-auto px-6 py-24 md:py-32">
+          <div class="text-center">
+            <div class="inline-flex items-center gap-2 px-4 py-2 bg-white/10 backdrop-blur-sm rounded-full text-white/90 text-sm mb-8">
+              <div class="w-2 h-2 bg-success rounded-full animate-pulse"></div>
+              Powered by Crossref & OpenAlex verified metadata
+            </div>
+            <h1 class="text-4xl md:text-6xl font-extrabold text-white mb-6 leading-tight">
+              AI Academic<br>Submission Engine
+            </h1>
+            <p class="text-xl text-white/80 max-w-2xl mx-auto mb-10 leading-relaxed">
+              Transform raw research papers into verified, formatted, submission-ready documents. 
+              Real references. Real credibility. Full user control.
+            </p>
+            <div class="flex flex-col sm:flex-row gap-4 justify-center">
+              <button onclick="navigateTo('upload')" class="px-8 py-4 bg-white text-primary-700 font-semibold rounded-xl hover:bg-primary-50 transition-all shadow-lg hover:shadow-xl text-lg">
+                Upload Your Paper
+              </button>
+              <button onclick="document.getElementById('features-section').scrollIntoView({behavior:'smooth'})" class="px-8 py-4 bg-white/10 backdrop-blur-sm text-white font-semibold rounded-xl hover:bg-white/20 transition-all border border-white/20 text-lg">
+                Learn More
+              </button>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div id="features-section" class="max-w-6xl mx-auto px-6 py-20">
+        <h2 class="text-3xl font-bold text-center text-academic-900 mb-4">How It Works</h2>
+        <p class="text-center text-academic-500 mb-16 max-w-2xl mx-auto">From upload to submission-ready document in minutes, with full transparency and control at every step.</p>
+        
+        <div class="grid md:grid-cols-3 gap-8">
+          <div class="feature-card">
+            <div class="feature-icon bg-primary-100 text-primary-600">
+              <svg class="w-7 h-7" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M7 16a4 4 0 01-.88-7.903A5 5 0 1115.9 6L16 6a5 5 0 011 9.9M15 13l-3-3m0 0l-3 3m3-3v12"/></svg>
+            </div>
+            <h3 class="text-lg font-bold text-academic-900 mb-2">Upload & Analyze</h3>
+            <p class="text-academic-500 text-sm leading-relaxed">Upload PDF or Word documents. AI extracts key topics, claims, and keywords automatically.</p>
+          </div>
+          <div class="feature-card">
+            <div class="feature-icon bg-success/10 text-success">
+              <svg class="w-7 h-7" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z"/></svg>
+            </div>
+            <h3 class="text-lg font-bold text-academic-900 mb-2">Verified References</h3>
+            <p class="text-academic-500 text-sm leading-relaxed">Only real scholarly references from Crossref and OpenAlex. Every citation has a verified DOI.</p>
+          </div>
+          <div class="feature-card">
+            <div class="feature-icon bg-accent/10 text-accent">
+              <svg class="w-7 h-7" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 16v1a3 3 0 003 3h10a3 3 0 003-3v-1m-4-4l-4 4m0 0l-4-4m4 4V4"/></svg>
+            </div>
+            <h3 class="text-lg font-bold text-academic-900 mb-2">Export Ready</h3>
+            <p class="text-academic-500 text-sm leading-relaxed">Download formatted papers with proper citations in APA, IEEE, Nature, Springer, Elsevier, or DeSci format.</p>
+          </div>
+          <div class="feature-card">
+            <div class="feature-icon bg-warning/10 text-warning">
+              <svg class="w-7 h-7" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 10V3L4 14h7v7l9-11h-7z"/></svg>
+            </div>
+            <h3 class="text-lg font-bold text-academic-900 mb-2">AI Co-Pilot</h3>
+            <p class="text-academic-500 text-sm leading-relaxed">Context-aware assistant that understands your paper, suggests improvements, and explains every recommendation.</p>
+          </div>
+          <div class="feature-card">
+            <div class="feature-icon bg-danger/10 text-danger">
+              <svg class="w-7 h-7" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5H7a2 2 0 00-2 2v12a2 2 0 002 2h10a2 2 0 002-2V7a2 2 0 00-2-2h-2M9 5a2 2 0 002 2h2a2 2 0 002-2M9 5a2 2 0 012-2h2a2 2 0 012 2m-6 9l2 2 4-4"/></svg>
+            </div>
+            <h3 class="text-lg font-bold text-academic-900 mb-2">Similarity Check</h3>
+            <p class="text-academic-500 text-sm leading-relaxed">Scan against public academic databases. Get originality scores and identify flagged sections.</p>
+          </div>
+          <div class="feature-card">
+            <div class="feature-icon bg-primary-100 text-primary-600">
+              <svg class="w-7 h-7" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 15v2m-6 4h12a2 2 0 002-2v-6a2 2 0 00-2-2H6a2 2 0 00-2 2v6a2 2 0 002 2zm10-10V7a4 4 0 00-8 0v4h8z"/></svg>
+            </div>
+            <h3 class="text-lg font-bold text-academic-900 mb-2">Full User Control</h3>
+            <p class="text-academic-500 text-sm leading-relaxed">Accept, reject, or edit every AI suggestion. No invisible automation. Complete transparency.</p>
+          </div>
+        </div>
+      </div>
+
+      <div class="bg-academic-900 py-16">
+        <div class="max-w-4xl mx-auto px-6 text-center">
+          <h2 class="text-2xl font-bold text-white mb-4">Ready to submit with confidence?</h2>
+          <p class="text-academic-400 mb-8">Upload your paper now and let AI help you prepare a credible, submission-ready document.</p>
+          <button onclick="navigateTo('upload')" class="px-8 py-3 bg-primary-600 text-white font-semibold rounded-xl hover:bg-primary-700 transition-all">
+            Get Started
+          </button>
+        </div>
+      </div>
+    </section>
+
+    <!-- Upload Page -->
+    <section id="page-upload" class="page">
+      <div class="max-w-3xl mx-auto px-6 py-12">
+        <h1 class="text-3xl font-bold text-academic-900 mb-2">Upload Your Paper</h1>
+        <p class="text-academic-500 mb-8">Upload a PDF or Word document to begin analysis. Max 20MB, up to 100 pages.</p>
+
+        <div id="uploadZone" class="upload-zone" ondrop="handleDrop(event)" ondragover="handleDragOver(event)" ondragleave="handleDragLeave(event)">
+          <input type="file" id="fileInput" accept=".pdf,.doc,.docx" class="hidden" onchange="handleFileSelect(event)">
+          <div id="uploadContent" class="text-center">
+            <div class="w-16 h-16 mx-auto mb-4 bg-primary-100 rounded-full flex items-center justify-center">
+              <svg class="w-8 h-8 text-primary-600" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M7 16a4 4 0 01-.88-7.903A5 5 0 1115.9 6L16 6a5 5 0 011 9.9M15 13l-3-3m0 0l-3 3m3-3v12"/></svg>
+            </div>
+            <p class="text-lg font-medium text-academic-700 mb-2">Drop your paper here or click to browse</p>
+            <p class="text-sm text-academic-400">Supported formats: PDF, DOC, DOCX</p>
+          </div>
+          <div id="uploadProgress" class="hidden text-center">
+            <div class="w-16 h-16 mx-auto mb-4">
+              <div class="loading-spinner"></div>
+            </div>
+            <p class="text-lg font-medium text-primary-700 mb-2">Analyzing your paper...</p>
+            <p class="text-sm text-academic-400">Extracting content, topics, and claims</p>
+            <div class="w-full bg-academic-200 rounded-full h-2 mt-4 max-w-xs mx-auto">
+              <div id="progressBar" class="bg-primary-600 h-2 rounded-full transition-all duration-500" style="width: 0%"></div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Previous Papers -->
+        <div id="previousPapers" class="mt-10">
+          <h3 class="text-lg font-semibold text-academic-700 mb-4">Recent Papers</h3>
+          <div id="papersList" class="space-y-3"></div>
+          <p id="noPapers" class="text-sm text-academic-400 hidden">No papers uploaded yet.</p>
+        </div>
+      </div>
+    </section>
+
+    <!-- Analysis Dashboard -->
+    <section id="page-dashboard" class="page">
+      <div class="max-w-7xl mx-auto px-6 py-8">
+        <div class="flex items-center justify-between mb-8">
+          <div>
+            <h1 class="text-2xl font-bold text-academic-900">Analysis Dashboard</h1>
+            <p id="dashboardPaperTitle" class="text-academic-500 mt-1"></p>
+          </div>
+          <div class="flex gap-3">
+            <button onclick="autoSourceReferences()" class="btn-secondary" id="autoSourceBtn">
+              <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"/></svg>
+              Auto-Source References
+            </button>
+            <button onclick="runSimilarityCheck()" class="btn-secondary" id="similarityBtn">
+              <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5H7a2 2 0 00-2 2v12a2 2 0 002 2h10a2 2 0 002-2V7a2 2 0 00-2-2h-2M9 5a2 2 0 002 2h2a2 2 0 002-2M9 5a2 2 0 012-2h2a2 2 0 012 2"/></svg>
+              Similarity Check
+            </button>
+          </div>
+        </div>
+
+        <div class="grid md:grid-cols-4 gap-4 mb-8">
+          <div class="stat-card">
+            <div class="text-sm text-academic-500 mb-1">Words</div>
+            <div id="statWords" class="text-2xl font-bold text-academic-900">-</div>
+          </div>
+          <div class="stat-card">
+            <div class="text-sm text-academic-500 mb-1">Pages</div>
+            <div id="statPages" class="text-2xl font-bold text-academic-900">-</div>
+          </div>
+          <div class="stat-card">
+            <div class="text-sm text-academic-500 mb-1">References</div>
+            <div id="statRefs" class="text-2xl font-bold text-academic-900">-</div>
+          </div>
+          <div class="stat-card">
+            <div class="text-sm text-academic-500 mb-1">Originality</div>
+            <div id="statOriginality" class="text-2xl font-bold text-academic-900">-</div>
+          </div>
+        </div>
+
+        <div class="grid md:grid-cols-2 gap-6">
+          <!-- Keywords & Topics -->
+          <div class="dashboard-card">
+            <h3 class="text-lg font-semibold text-academic-900 mb-4">Extracted Keywords</h3>
+            <div id="keywordsList" class="flex flex-wrap gap-2"></div>
+          </div>
+
+          <!-- Topics -->
+          <div class="dashboard-card">
+            <h3 class="text-lg font-semibold text-academic-900 mb-4">Identified Topics</h3>
+            <div id="topicsList" class="space-y-3"></div>
+          </div>
+
+          <!-- Claims Needing Citations -->
+          <div class="dashboard-card md:col-span-2">
+            <div class="flex items-center justify-between mb-4">
+              <h3 class="text-lg font-semibold text-academic-900">Claims & Statements</h3>
+              <button onclick="navigateTo('citations')" class="text-sm text-primary-600 hover:text-primary-700 font-medium">View Citation Suggestions &rarr;</button>
+            </div>
+            <div id="claimsList" class="space-y-3"></div>
+          </div>
+
+          <!-- Structure Analysis -->
+          <div class="dashboard-card md:col-span-2">
+            <h3 class="text-lg font-semibold text-academic-900 mb-4">Structure Analysis</h3>
+            <div id="structureAnalysis" class="grid md:grid-cols-2 gap-6">
+              <div>
+                <h4 class="text-sm font-medium text-academic-600 mb-3">Sections Found</h4>
+                <div id="sectionsList" class="space-y-2"></div>
+              </div>
+              <div>
+                <h4 class="text-sm font-medium text-academic-600 mb-3">Issues & Suggestions</h4>
+                <div id="issuesList" class="space-y-2"></div>
+              </div>
+            </div>
+          </div>
+
+          <!-- Similarity Results -->
+          <div id="similarityResults" class="dashboard-card md:col-span-2 hidden">
+            <h3 class="text-lg font-semibold text-academic-900 mb-4">Similarity Analysis</h3>
+            <div class="flex items-center gap-6 mb-6">
+              <div class="text-center">
+                <div id="origScoreCircle" class="originality-circle">
+                  <span id="origScoreVal" class="text-3xl font-bold">-</span>
+                  <span class="text-xs text-academic-500">originality</span>
+                </div>
+              </div>
+              <div class="flex-1">
+                <div class="grid grid-cols-2 gap-4">
+                  <div><span class="text-sm text-academic-500">Sections Checked:</span> <span id="simChecked" class="font-semibold">-</span></div>
+                  <div><span class="text-sm text-academic-500">Flagged:</span> <span id="simFlagged" class="font-semibold">-</span></div>
+                </div>
+                <p class="text-xs text-academic-400 mt-3 italic">This is a similarity estimation based on public academic metadata. Not a definitive plagiarism report.</p>
+              </div>
+            </div>
+            <div id="similarSectionsList" class="space-y-3"></div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- Citation Suggestions Page -->
+    <section id="page-citations" class="page">
+      <div class="max-w-7xl mx-auto px-6 py-8">
+        <div class="flex items-center justify-between mb-8">
+          <div>
+            <h1 class="text-2xl font-bold text-academic-900">Citation Suggestions</h1>
+            <p class="text-academic-500 mt-1">Review where citations are needed and approve verified references</p>
+          </div>
+          <button onclick="detectCitationSpots()" class="btn-primary" id="detectSpotsBtn">
+            <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"/></svg>
+            Detect Citation Spots
+          </button>
+        </div>
+
+        <div id="citationSpotsList" class="space-y-4">
+          <p class="text-academic-400 text-center py-8">Click "Detect Citation Spots" to find where citations are needed in your paper.</p>
+        </div>
+      </div>
+    </section>
+
+    <!-- AI Co-Pilot Page -->
+    <section id="page-copilot" class="page">
+      <div class="max-w-5xl mx-auto px-6 py-8">
+        <h1 class="text-2xl font-bold text-academic-900 mb-2">AI Co-Pilot</h1>
+        <p class="text-academic-500 mb-6">Context-aware assistant that understands your paper, references, and formatting</p>
+
+        <div class="grid md:grid-cols-3 gap-6">
+          <div class="md:col-span-2">
+            <div class="bg-white rounded-xl border border-academic-200 shadow-sm overflow-hidden flex flex-col" style="height: 600px;">
+              <div id="chatMessages" class="flex-1 overflow-y-auto p-6 space-y-4">
+                <div class="chat-message assistant">
+                  <div class="chat-bubble assistant">
+                    <p>Welcome! I'm your AI Academic Co-Pilot. I understand your paper's content, references, formatting, and similarity results.</p>
+                    <p class="mt-2">Ask me about:</p>
+                    <ul class="mt-1 text-sm space-y-1 list-disc list-inside">
+                      <li>Paper structure and organization</li>
+                      <li>Citation and reference management</li>
+                      <li>Similarity and originality</li>
+                      <li>Academic writing improvement</li>
+                      <li>Journal formatting options</li>
+                    </ul>
+                  </div>
+                </div>
+              </div>
+              <div class="border-t border-academic-200 p-4">
+                <div class="flex gap-3">
+                  <input type="text" id="chatInput" placeholder="Ask about your paper..." class="flex-1 px-4 py-3 border border-academic-200 rounded-lg focus:ring-2 focus:ring-primary-500 focus:border-transparent outline-none text-sm" onkeydown="if(event.key==='Enter')sendChatMessage()">
+                  <button onclick="sendChatMessage()" class="btn-primary px-6">Send</button>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <div class="space-y-4">
+            <div class="bg-white rounded-xl border border-academic-200 p-4">
+              <h3 class="text-sm font-semibold text-academic-700 mb-3">Quick Actions</h3>
+              <div class="space-y-2">
+                <button onclick="sendQuickChat('How is my paper structured?')" class="quick-action-btn">Analyze structure</button>
+                <button onclick="sendQuickChat('What references do I have?')" class="quick-action-btn">Review references</button>
+                <button onclick="sendQuickChat('Check my originality')" class="quick-action-btn">Originality status</button>
+                <button onclick="sendQuickChat('Help me improve my writing')" class="quick-action-btn">Improve writing</button>
+                <button onclick="sendQuickChat('What format options are available?')" class="quick-action-btn">Format options</button>
+                <button onclick="sendQuickChat('Give me a summary of my paper')" class="quick-action-btn">Paper summary</button>
+              </div>
+            </div>
+
+            <div class="bg-white rounded-xl border border-academic-200 p-4">
+              <h3 class="text-sm font-semibold text-academic-700 mb-3">Rephrase Text</h3>
+              <textarea id="rephraseInput" rows="4" placeholder="Paste text to improve academic wording..." class="w-full px-3 py-2 border border-academic-200 rounded-lg text-sm focus:ring-2 focus:ring-primary-500 focus:border-transparent outline-none resize-none"></textarea>
+              <button onclick="rephraseText()" class="btn-secondary w-full mt-2 text-sm">Rephrase</button>
+              <div id="rephraseResult" class="mt-3 hidden">
+                <h4 class="text-xs font-medium text-academic-600 mb-1">Improved version:</h4>
+                <p id="rephrasedText" class="text-sm text-academic-800 bg-success/5 p-3 rounded-lg border border-success/20"></p>
+                <div id="rephraseImprovements" class="mt-2 space-y-1"></div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- Reference Manager Page -->
+    <section id="page-references" class="page">
+      <div class="max-w-7xl mx-auto px-6 py-8">
+        <div class="flex items-center justify-between mb-8">
+          <div>
+            <h1 class="text-2xl font-bold text-academic-900">Reference Manager</h1>
+            <p class="text-academic-500 mt-1">Manage, search, and organize your verified references</p>
+          </div>
+          <div class="flex gap-3">
+            <button onclick="showSearchModal()" class="btn-primary">
+              <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"/></svg>
+              Search References
+            </button>
+          </div>
+        </div>
+
+        <!-- Search Modal -->
+        <div id="searchModal" class="hidden mb-6">
+          <div class="bg-white rounded-xl border border-academic-200 p-6 shadow-sm">
+            <div class="flex items-center gap-3 mb-4">
+              <input type="text" id="refSearchInput" placeholder="Search for scholarly references..." class="flex-1 px-4 py-3 border border-academic-200 rounded-lg focus:ring-2 focus:ring-primary-500 focus:border-transparent outline-none" onkeydown="if(event.key==='Enter')searchNewReferences()">
+              <button onclick="searchNewReferences()" class="btn-primary">Search</button>
+              <button onclick="hideSearchModal()" class="btn-ghost">Cancel</button>
+            </div>
+            <div id="searchResults" class="space-y-3"></div>
+          </div>
+        </div>
+
+        <!-- Filter tabs -->
+        <div class="flex gap-2 mb-6">
+          <button onclick="filterReferences('all')" class="filter-tab active" data-filter="all">All</button>
+          <button onclick="filterReferences('accepted')" class="filter-tab" data-filter="accepted">Accepted</button>
+          <button onclick="filterReferences('suggested')" class="filter-tab" data-filter="suggested">Suggested</button>
+          <button onclick="filterReferences('rejected')" class="filter-tab" data-filter="rejected">Rejected</button>
+        </div>
+
+        <div id="referencesList" class="space-y-3">
+          <p class="text-academic-400 text-center py-8">No references yet. Use "Auto-Source References" from the Dashboard or search manually.</p>
+        </div>
+      </div>
+    </section>
+
+    <!-- Formatting Settings Page -->
+    <section id="page-formatting" class="page">
+      <div class="max-w-5xl mx-auto px-6 py-8">
+        <h1 class="text-2xl font-bold text-academic-900 mb-2">Journal Formatting</h1>
+        <p class="text-academic-500 mb-8">Choose your target journal format. Citations and bibliography will be automatically adjusted.</p>
+
+        <div id="formatStyles" class="grid md:grid-cols-2 lg:grid-cols-3 gap-4 mb-8"></div>
+
+        <div id="formatPreview" class="bg-white rounded-xl border border-academic-200 p-6 shadow-sm hidden">
+          <h3 class="text-lg font-semibold text-academic-900 mb-4">Bibliography Preview</h3>
+          <div id="bibPreview" class="font-serif text-sm leading-relaxed whitespace-pre-wrap bg-academic-50 p-6 rounded-lg border border-academic-100"></div>
+        </div>
+      </div>
+    </section>
+
+    <!-- Export Page -->
+    <section id="page-export" class="page">
+      <div class="max-w-4xl mx-auto px-6 py-8">
+        <h1 class="text-2xl font-bold text-academic-900 mb-2">Export Document</h1>
+        <p class="text-academic-500 mb-8">Download your formatted, submission-ready paper with verified references</p>
+
+        <div class="bg-white rounded-xl border border-academic-200 p-8 shadow-sm mb-8">
+          <div class="grid md:grid-cols-2 gap-8">
+            <div>
+              <h3 class="text-lg font-semibold text-academic-900 mb-4">Export Settings</h3>
+              <div class="space-y-4">
+                <div>
+                  <label class="text-sm font-medium text-academic-600 block mb-2">Citation Style</label>
+                  <select id="exportStyle" class="w-full px-4 py-3 border border-academic-200 rounded-lg focus:ring-2 focus:ring-primary-500 outline-none">
+                    <option value="APA">APA (7th Edition)</option>
+                    <option value="IEEE">IEEE</option>
+                    <option value="DeSci">DeSci DAO</option>
+                    <option value="Nature">Nature</option>
+                    <option value="Elsevier">Elsevier</option>
+                    <option value="Springer">Springer</option>
+                  </select>
+                </div>
+                <div>
+                  <label class="text-sm font-medium text-academic-600 block mb-2">Format</label>
+                  <div class="flex gap-3">
+                    <label class="flex items-center gap-2 px-4 py-3 border border-academic-200 rounded-lg cursor-pointer hover:bg-primary-50 transition-colors has-[:checked]:border-primary-500 has-[:checked]:bg-primary-50 flex-1">
+                      <input type="radio" name="exportFormat" value="pdf" checked class="text-primary-600">
+                      <span class="text-sm font-medium">PDF</span>
+                    </label>
+                  </div>
+                </div>
+              </div>
+            </div>
+            <div>
+              <h3 class="text-lg font-semibold text-academic-900 mb-4">Document Summary</h3>
+              <div id="exportSummary" class="space-y-3">
+                <div class="flex justify-between py-2 border-b border-academic-100">
+                  <span class="text-sm text-academic-500">Paper Title</span>
+                  <span id="exportTitle" class="text-sm font-medium text-academic-800 text-right max-w-[200px] truncate">-</span>
+                </div>
+                <div class="flex justify-between py-2 border-b border-academic-100">
+                  <span class="text-sm text-academic-500">Word Count</span>
+                  <span id="exportWords" class="text-sm font-medium text-academic-800">-</span>
+                </div>
+                <div class="flex justify-between py-2 border-b border-academic-100">
+                  <span class="text-sm text-academic-500">Accepted References</span>
+                  <span id="exportRefs" class="text-sm font-medium text-academic-800">-</span>
+                </div>
+                <div class="flex justify-between py-2 border-b border-academic-100">
+                  <span class="text-sm text-academic-500">Current Format</span>
+                  <span id="exportFormat" class="text-sm font-medium text-academic-800">-</span>
+                </div>
+              </div>
+            </div>
+          </div>
+          <div class="mt-8 flex gap-4">
+            <button onclick="exportPaper()" class="btn-primary px-8 py-3 text-base" id="exportBtn">
+              <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 16v1a3 3 0 003 3h10a3 3 0 003-3v-1m-4-4l-4 4m0 0l-4-4m4 4V4"/></svg>
+              Download PDF
+            </button>
+            <button onclick="previewExport()" class="btn-secondary px-8 py-3 text-base">
+              Preview
+            </button>
+          </div>
+        </div>
+
+        <div id="exportPreview" class="bg-white rounded-xl border border-academic-200 p-8 shadow-sm hidden">
+          <h3 class="text-lg font-semibold text-academic-900 mb-4">Document Preview</h3>
+          <div id="previewContent" class="font-serif text-sm leading-relaxed max-h-[500px] overflow-y-auto"></div>
+        </div>
+      </div>
+    </section>
+
+    <!-- Reference Library Page -->
+    <section id="page-library" class="page">
+      <div class="max-w-6xl mx-auto px-6 py-8">
+        <div class="flex items-center justify-between mb-8">
+          <div>
+            <h1 class="text-2xl font-bold text-academic-900">Reference Library</h1>
+            <p class="text-academic-500 mt-1">Save, organize, and reuse references across projects</p>
+          </div>
+          <button onclick="showAddToLibraryModal()" class="btn-primary">
+            <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 4v16m8-8H4"/></svg>
+            Add Reference
+          </button>
+        </div>
+
+        <!-- Projects Filter -->
+        <div class="flex gap-2 mb-6 flex-wrap">
+          <button onclick="filterLibrary('all')" class="filter-tab active" data-lib-filter="all">All Projects</button>
+          <div id="libraryProjectTabs"></div>
+        </div>
+
+        <div id="libraryList" class="space-y-3">
+          <p class="text-academic-400 text-center py-8">Your reference library is empty. Save references from your papers to build your library.</p>
+        </div>
+      </div>
+    </section>
+
+  </main>
+
+  <!-- Add to Library Modal -->
+  <div id="addLibraryModal" class="modal-overlay hidden">
+    <div class="modal-content">
+      <div class="flex items-center justify-between mb-6">
+        <h3 class="text-lg font-semibold text-academic-900">Add Reference to Library</h3>
+        <button onclick="closeAddLibraryModal()" class="text-academic-400 hover:text-academic-600">
+          <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"/></svg>
+        </button>
+      </div>
+      <div class="space-y-4">
+        <div>
+          <label class="text-sm font-medium text-academic-600">Title *</label>
+          <input type="text" id="libTitle" class="modal-input" placeholder="Reference title">
+        </div>
+        <div>
+          <label class="text-sm font-medium text-academic-600">Authors</label>
+          <input type="text" id="libAuthors" class="modal-input" placeholder="Author names (comma separated)">
+        </div>
+        <div class="grid grid-cols-2 gap-4">
+          <div>
+            <label class="text-sm font-medium text-academic-600">Year</label>
+            <input type="number" id="libYear" class="modal-input" placeholder="2024">
+          </div>
+          <div>
+            <label class="text-sm font-medium text-academic-600">Journal</label>
+            <input type="text" id="libJournal" class="modal-input" placeholder="Journal name">
+          </div>
+        </div>
+        <div>
+          <label class="text-sm font-medium text-academic-600">DOI</label>
+          <input type="text" id="libDoi" class="modal-input" placeholder="10.xxxx/xxxxx">
+        </div>
+        <div>
+          <label class="text-sm font-medium text-academic-600">Project</label>
+          <input type="text" id="libProject" class="modal-input" placeholder="Project name (default: Default)">
+        </div>
+        <div>
+          <label class="text-sm font-medium text-academic-600">Notes</label>
+          <textarea id="libNotes" rows="2" class="modal-input resize-none" placeholder="Your notes..."></textarea>
+        </div>
+        <button onclick="addToLibrary()" class="btn-primary w-full py-3">Save to Library</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- Edit Reference Modal -->
+  <div id="editRefModal" class="modal-overlay hidden">
+    <div class="modal-content">
+      <div class="flex items-center justify-between mb-6">
+        <h3 class="text-lg font-semibold text-academic-900">Edit Reference</h3>
+        <button onclick="closeEditRefModal()" class="text-academic-400 hover:text-academic-600">
+          <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"/></svg>
+        </button>
+      </div>
+      <div class="space-y-4">
+        <input type="hidden" id="editRefId">
+        <div>
+          <label class="text-sm font-medium text-academic-600">Title</label>
+          <input type="text" id="editRefTitle" class="modal-input">
+        </div>
+        <div>
+          <label class="text-sm font-medium text-academic-600">Authors</label>
+          <input type="text" id="editRefAuthors" class="modal-input">
+        </div>
+        <div class="grid grid-cols-2 gap-4">
+          <div>
+            <label class="text-sm font-medium text-academic-600">Year</label>
+            <input type="number" id="editRefYear" class="modal-input">
+          </div>
+          <div>
+            <label class="text-sm font-medium text-academic-600">Journal</label>
+            <input type="text" id="editRefJournal" class="modal-input">
+          </div>
+        </div>
+        <div>
+          <label class="text-sm font-medium text-academic-600">DOI</label>
+          <input type="text" id="editRefDoi" class="modal-input">
+        </div>
+        <button onclick="saveEditedReference()" class="btn-primary w-full py-3">Save Changes</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- Toast Notification -->
+  <div id="toast" class="fixed bottom-6 right-6 z-50 hidden">
+    <div id="toastContent" class="flex items-center gap-3 px-5 py-3 rounded-xl shadow-lg border text-sm font-medium"></div>
+  </div>
+
+  <script src="script.js"></script>
+</body>
+</html>
