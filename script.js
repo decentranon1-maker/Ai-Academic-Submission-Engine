@@ -1,6 +1,6 @@
 // === AI Academic Submission Engine - Frontend Application ===
 
-const API_URL = '/';
+const API_URL = 'https://production-ai-academic-submission.tyzo.nodeops.app';
 
 // === State Management ===
 const state = {
