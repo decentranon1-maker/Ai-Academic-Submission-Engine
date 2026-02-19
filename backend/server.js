@@ -29,6 +29,14 @@ app.use(express.urlencoded({ extended: true, limit: '50mb' }));
 
 app.use('/uploads', express.static(path.join(__dirname, 'uploads')));
 
+// Serve frontend
+app.use(express.static(path.join(__dirname, '..')));
+
+// Homepage fallback
+app.get('/', (req, res) => {
+  res.sendFile(path.join(__dirname, '..', 'index.html'));
+});
+
 app.use('/api/papers', paperRoutes);
 app.use('/api/references', referenceRoutes);
 app.use('/api/analysis', analysisRoutes);
