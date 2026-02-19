@@ -1,6 +1,6 @@
 // === AI Academic Submission Engine - Frontend Application ===
 
-const API_URL = 'http://localhost:3000';
+const API_URL = '/';
 
 // === State Management ===
 const state = {
